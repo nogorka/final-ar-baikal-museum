@@ -1,0 +1,42 @@
+{
+  "room1": {
+    "room2": "b",
+    "room9": "b,l90,f"
+  },
+  "room2": {
+    "room1": "b",
+    "room9": "b,r90,f"
+  },
+  "room3": {
+    "room4": "b",
+    "room9": "b,r90,f"
+  },
+  "room4": {
+    "room3": "b",
+    "room9": "b,l90,f"
+  },
+  "room5": {
+    "room6": "b,l90"
+  },
+  "room6": {
+    "room5": "l90,f",
+    "room7": "l45,f",
+    "room9": "b,l135,f"
+  },
+  "room7": {
+    "room6": "l45,f",
+    "room8": "r90,f",
+    "room9": "b,r135,f"
+  },
+  "room8": {
+    "room7": "b,r90"
+  },
+  "room9": {
+    "room1": "f,l45,f,l90,f",
+    "room2": "f,l45,f,r90,f",
+    "room3": "f,r45,f,r90,f",
+    "room4": "f,r45,f,l90,f",
+    "room6": "f,l135,f",
+    "room7": "f,r135,f"
+  }
+}
