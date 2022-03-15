@@ -11,9 +11,9 @@ CREATE TABLE `Entities` (
 CREATE TABLE `Rooms` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
-	`exsStr` varchar(255), --list of all entities in table (optional)
+	`exsStr` varchar(255), 
 	PRIMARY KEY (`id`)
-);
+); -- exsStr is list of all entities in table (optional)
 
 CREATE TABLE `VisitingRecords` (
 	`id` int NOT NULL AUTO_INCREMENT,
@@ -30,7 +30,7 @@ CREATE TABLE `PredefinedRoutes` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`route` varchar(255) NOT NULL,
-	`mapId` int(255) NOT NULL,
+	`mapId` int NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -46,9 +46,3 @@ ALTER TABLE `Entities` ADD CONSTRAINT `Entities_fk0` FOREIGN KEY (`roomId`) REFE
 ALTER TABLE `VisitingRecords` ADD CONSTRAINT `VisitingRecords_fk0` FOREIGN KEY (`entityId`) REFERENCES `Entities`(`id`);
 
 ALTER TABLE `PredefinedRoutes` ADD CONSTRAINT `PredefinedRoutes_fk0` FOREIGN KEY (`mapId`) REFERENCES `Map`(`id`);
-
-
-
-
-
-
