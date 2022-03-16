@@ -1,0 +1,14 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}Start page{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать в AR гид!!</h1>
+    <p>Здесь вы можете выбрать варианты для своего гида:</p>
+    <ul>        
+        <li><a href="/predefined">предзаданные маршруты</a></li>
+        <li><a href="/generated">генеративный маршрут</a></li>
+        <li><a href="/custom">кастомый маршрут</a></li>
+    </ul>
+{% endblock %}

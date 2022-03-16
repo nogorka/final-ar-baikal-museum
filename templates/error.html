@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block title %}Error page{% endblock %}
+
+{% block content %}
+
+    <h1>Error No {{error.code}}</h1>
+    <h2>{{error.name}}</h2>
+    <p>{{error.description}}</p>
+    <p>we are really sorry, connect with sb from support</p>
+
+{% endblock %}

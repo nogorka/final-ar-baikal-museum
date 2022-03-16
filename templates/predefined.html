@@ -1,0 +1,22 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}Predefined routes{% endblock %}
+
+{% block content %}
+<h1>Предзаданные маршруты</h1>
+<p>Здесь вы можете выбрать варианты маршрутов гида:</p>
+<form>
+    <p><select name="">
+            <option disabled>Выберите маршрут</option>
+            <option value="">Маршрут 1</option>
+            <option value="">Маршрут 2</option>
+            <option value="">Маршрут 3</option>
+        </select>
+    </p>
+    <p><input type="submit" value="Отправить"></p>
+</form>
+
+<a href="/">Назад</a>
+
+{% endblock %}
