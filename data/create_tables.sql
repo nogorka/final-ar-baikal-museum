@@ -1,4 +1,4 @@
-CREATE TABLE `Entities` (
+CREATE TABLE `Entities` IF NOT EXISTS (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`roomId` int NOT NULL,
@@ -8,14 +8,14 @@ CREATE TABLE `Entities` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Rooms` (
+CREATE TABLE `Rooms` IF NOT EXISTS (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`exsStr` varchar(255), 
 	PRIMARY KEY (`id`)
 ); -- exsStr is list of all entities in table (optional)
 
-CREATE TABLE `VisitingRecords` (
+CREATE TABLE `VisitingRecords` IF NOT EXISTS (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`startTime` TIMESTAMP NOT NULL,
 	`entityId` int NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `VisitingRecords` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `PredefinedRoutes` (
+CREATE TABLE `PredefinedRoutes` IF NOT EXISTS (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`route` varchar(255) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `PredefinedRoutes` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Map` (
+CREATE TABLE `Map` IF NOT EXISTS (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`jsonUri` varchar(255) NOT NULL,
