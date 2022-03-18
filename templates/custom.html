@@ -4,25 +4,34 @@
 {% block title %}Predefined routes{% endblock %}
 
 {% block content %}
-<h1>Кастомый маршруты</h1>
-<p>Здесь вы можете выбрать экспонаты которые вы хотите посетить</p>
-<form>
-    <p><select multiple size="9">
-            <option disabled>Выберите экспонаты</option>
-            <option value="">Экспонат 1</option>
-            <option value="">Экспонат 2</option>
-            <option value="">Экспонат 3</option>
-            <option value="">Экспонат 4</option>
-            <option value="">Экспонат 5</option>
-            <option value="">Экспонат 6</option>
-            <option value="">Экспонат 7</option>
-            <option value="">Экспонат 8</option>
-            <option value="">Экспонат 9</option>
-        </select>
-    </p>
-    <p><input type="submit" value="Отправить"></p>
-</form>
+<div class="start-content">
 
-<a href="/">Назад</a>
+    <h1>Кастомый маршруты</h1>
+    <p>Здесь вы можете выбрать экспонаты которые вы хотите посетить</p>
+    <form name="custom" method="post">
+        <p><select class="form-select" multiple size="9" onselect="onMultiSelectionChange(this)">
+                <option disabled>Выберите экспонаты</option>
+
+
+                {% for room, entities in rooms.items() %}
+                <optgroup label="{{room}}">
+                    {% for entity in entities %}
+                    
+                    <option value={{entity[0]}} name={{entity[0]}}>{{entity[1]}} </option>
+                    {% endfor %}
+
+                </optgroup>
+                {% endfor %}
+
+
+            </select>
+        </p>
+        <p class="d-grid gap-2 col-6 mx-auto"><input class="btn btn-primary btn-lg" id="custom-submit" type="button"
+                value="Отправить" onclick="submitCustom(this)">
+        </p>
+    </form>
+
+    <a href="/" class="btn btn-secondary d-grid gap-2 col-6 mx-auto">Назад</a>
+</div>
 
 {% endblock %}
