@@ -1,37 +1,47 @@
-
 import mysql.connector
-import os
 from data.config import HOST, USER, PASSWORD, DBNAME
-
-_DBNAME = DBNAME
-dir_path = 'data'
-SQL = f"CREATE DATABASE IF NOT EXISTS {_DBNAME}; SHOW DATABASES; USE {_DBNAME}; "
-
-# TODO: truncate tables
 
 
 def read_file(file_path):
-    with open(file_path, 'r') as f:
+    with open(file_path, mode='r', encoding="utf-8") as f:
         return f.read()
 
 
-os.chdir(dir_path)
-for file in os.listdir():
-    if file.endswith('.sql'):
-        SQL += read_file(f"{file}")
+def open_connection(name):
+    return mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database=name,
+        charset='utf8',
+        use_unicode=True
+    )
 
 
-conn = mysql.connector.connect(
-    host=HOST,
-    user=USER,
-    password=PASSWORD
-)
+files = ['data/create_tables.sql',
+         'data/fill_database.sql',
+         'data/fill_stat.sql'
+         ]
 
-cursor = conn.cursor(buffered=True)
-cursor.execute(SQL, multi=True)
+sql = []
+for file in files:
+    text = (read_file(file)).replace('\n',"")
+    for line in text.split(';'):
+        if line:
+            sql.append(line)
 
-conn.commit()
+
+conn = open_connection(None)
+with conn.cursor() as cursor:
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DBNAME};")
+    conn.commit()
+    cursor.close()
 conn.close()
 
-
-# cursor.execute(f"DROP DATABASE {_DBNAME};")
+conn = open_connection(DBNAME)
+with conn.cursor() as cursor:
+    for query in sql:
+        cursor.execute(query, multi=True)
+        conn.commit()
+    cursor.close()
+conn.close()
