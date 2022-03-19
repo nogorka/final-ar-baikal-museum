@@ -9,25 +9,22 @@
     <h1>Кастомый маршруты</h1>
     <p>Здесь вы можете выбрать экспонаты которые вы хотите посетить</p>
     <form name="custom" method="post">
-        <p><select class="form-select" multiple size="9" onselect="onMultiSelectionChange(this)">
+        <p><select class="form-select" multiple size="9">
                 <option disabled>Выберите экспонаты</option>
-
 
                 {% for room, entities in rooms.items() %}
                 <optgroup label="{{room}}">
                     {% for entity in entities %}
-                    
-                    <option value={{entity[0]}} name={{entity[0]}}>{{entity[1]}} </option>
+                    <option value={{entity[0]}}>{{entity[1]}}</option>
                     {% endfor %}
 
                 </optgroup>
                 {% endfor %}
-
-
             </select>
         </p>
-        <p class="d-grid gap-2 col-6 mx-auto"><input class="btn btn-primary btn-lg" id="custom-submit" type="button"
-                value="Отправить" onclick="submitCustom(this)">
+        <p class="d-grid gap-2 col-6 mx-auto">
+            <input class="btn btn-primary btn-lg" id="custom-submit" type="button" value="Отправить"
+                onclick="submitCustom(this)">
         </p>
     </form>
 

@@ -1,15 +1,17 @@
-function onSelectionChange(select) {
-    let prevSelected = select.querySelector("option[selected]");
+function onSelectionChange(form) {
+    let select = form.querySelector('select');
+    return select.options[select.selectedIndex];
+}
 
-    if (prevSelected != null) {
-        prevSelected.removeAttribute("selected"); // remove old selected
-    }
+function onMultiSelectionChange(form) {
 
-    var selectedOption = select.options[select.selectedIndex];
-    selectedOption.setAttribute("selected", "");
-} 
+    options = form.querySelectorAll('option');
+    let selectedList = [];
+    options.forEach(opt => {
+        if (opt.selected) {
+            selectedList.push(opt.getAttribute('value'));
+        }
+    });
 
-function onMultiSelectionChange(select) {
-
-    console.log(select);
+    return selectedList;
 }

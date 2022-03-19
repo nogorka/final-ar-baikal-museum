@@ -6,32 +6,23 @@ const d = document;
 function submitPredefined(el) {
     let form = el.closest("form");
 
-    let selectedEl = form.querySelector("option[selected]");
+    let selectedEl = onSelectionChange(form);
 
     let data = { route: selectedEl.getAttribute("value") };
     let url = '/predefined';
 
     submit(url, data);
-
 }
 
 function submitCustom(el) {
     let form = el.closest("form");
 
-    let nodeList = form.querySelectorAll("option[value]");
-    // let nodeList = form.querySelectorAll("option[selected]");
-    //TODO - fix selected element
+    let selectedStr = onMultiSelectionChange(form).toString();
 
-    let selectedEl = "";
-    nodeList.forEach(element => {
-        selectedEl += element.getAttribute('value') + ",";
-    });
-
-    let data = { route: selectedEl };
+    let data = { route: selectedStr };
     let url = '/custom';
 
     submit(url, data);
-
 }
 
 
@@ -48,6 +39,7 @@ function submit(url, data) {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     };
+    console.log(data);
 
     fetch(url, {
         method: 'POST',
