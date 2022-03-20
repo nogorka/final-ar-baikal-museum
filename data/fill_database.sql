@@ -15,7 +15,7 @@ INSERT INTO `Entities` (`id`, `name`,`roomId`, `targetUri`, `overlayType`, `over
 (8, 'Экспонат 8', '3', 'None', 1, 'None'),
 (9, 'Сувенирная лавка', '4', 'None', 0, 'None');
 
-INSERT INTO `Map` (`id`, `name`,`jsonUri`) VALUES (1, 'Музей капля Байкала', 'matrix.json');
+INSERT INTO `Map` (`id`, `name`,`jsonUri`) VALUES (1, 'Музей капля Байкала', 'data/matrix.json');
 
 INSERT INTO `PredefinedRoutes` (`id`, `name`,`route`, `mapId`) VALUES 
 (1, 'Маршрут 1', '9,1,2,9,3,4,9,5,6,9', 1),

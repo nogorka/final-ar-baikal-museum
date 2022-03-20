@@ -8,7 +8,7 @@ function submitPredefined(el) {
 
     let selectedEl = onSelectionChange(form);
 
-    let data = { route: selectedEl.getAttribute("value") };
+    let data = { route: selectedEl.getAttribute("value"), type: "predefined" };
     let url = '/predefined';
 
     submit(url, data);
@@ -19,7 +19,7 @@ function submitCustom(el) {
 
     let selectedStr = onMultiSelectionChange(form).toString();
 
-    let data = { route: selectedStr };
+    let data = { route: selectedStr, type: "custom" };
     let url = '/custom';
 
     submit(url, data);
@@ -28,7 +28,7 @@ function submitCustom(el) {
 
 function submitGenerated() {
 
-    let data = { route: "" };
+    let data = { route: "", type: "generated" };
     let url = '/generated';
 
     submit(url, data);
