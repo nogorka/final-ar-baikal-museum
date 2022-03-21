@@ -1,0 +1,36 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block content %}
+<div class="start-content">
+    <h1>Универсальный шаблон | {{name}}</h1>
+    <p>{{description}}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                {% for line in thead%}
+                <th>{{line}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+
+        {% for k, value in data.items()%}
+        <tr>
+            <th>{{k}}</th>
+
+            {% for v in value.values()%}
+            <td>{{v}}</td>
+            {% endfor%}
+
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
+</div>
+{% endblock %}

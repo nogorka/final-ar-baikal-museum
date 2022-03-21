@@ -1,0 +1,17 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="start-content">
+    <h1>Пользовательская статистика</h1>
+    <p>Здесь вы можете выбрать варианты статистики</p>
+    <div class="btn-group">
+        <a class="btn btn-primary mb-2 btn-lg" href="/rooms_visiting">Посещения по залам</a>
+        <a class="btn btn-primary mb-2 btn-lg" href="/entities_rating">Рейтинг экспонатов</a>
+    </div>
+
+    <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
+</div>
+{% endblock %}
