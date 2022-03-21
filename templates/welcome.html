@@ -1,0 +1,18 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}Главное меню{% endblock %}
+
+{% block content %}
+<div class="start-content">
+    <h1>Цифровое представление Музей Капля Байкала</h1>
+    <p>Здесь вы можете выбрать варианты</p>
+    <div class="d-flex flex-column">
+        <a class="btn btn-primary mb-2 btn-lg" href="/photobooth">Фотобудка</a>
+        <a class="btn btn-primary mb-2 btn-lg" href="/gallery">Интерактивная галерея</a>
+        <a class="btn btn-primary mb-2 btn-lg" href="/portal">Портал</a>
+        <a class="btn btn-primary mb-2 btn-lg" href="/guide">AR гид</a>
+        <a class="btn btn-primary mb-2 btn-lg" href="/statistics">Статистика</a>
+    </div>
+</div>
+{% endblock %}

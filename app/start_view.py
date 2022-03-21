@@ -5,7 +5,7 @@ from .db import mysql
 start = Blueprint('start', __name__)
 
 
-@start.route('/')
+@start.route('/guide')
 def index():
     return render_template('start_page.html')
 

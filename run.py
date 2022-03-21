@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Blueprint
 from data.config import HOST, USER, DBNAME, PASSWORD
 from app.start_view import start
+from app.main_view import main
 from app.db import mysql
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ mysql.init_app(app)
 
 
 app.register_blueprint(start)
+app.register_blueprint(main)
 
 
 @app.route('/building')
