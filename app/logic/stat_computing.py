@@ -26,8 +26,8 @@ def get_entities_rating():
         else:
             stats[line[0]] = {'name': line[1],
                               'visualFeedback': line[2],
-                              "description": line[3],
-                              "completeness": line[4],
+                              'description': line[3],
+                              'completeness': line[4],
                               'count': 1,
                               'avg_total': 0}
 
@@ -44,11 +44,17 @@ def get_entities_rating():
 
 
 def get_rooms_visiting():
-    sql = """SELECT e.id, e.name, 
-        vr.visualFeedback, vr.description, vr.completeness 
+    sql = """SELECT e.id, e.name, vr.startTime 
         from entities as e, visitingrecords as vr 
-        where e.id = vr.entityId;"""
+        where e.id = vr.entityId and DATEDIFF(CURDATE(), vr.startTime) = 14;"""
     data = get_data(sql)
 
     stats = {}
+
+    for line in data:
+        if line[0] in stats.keys():
+            stats[line[0]]['count'] += 1
+        else:
+            stats[line[0]] = {'name': line[1],
+                              'count': 1}
     return stats

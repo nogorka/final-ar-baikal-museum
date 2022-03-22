@@ -37,9 +37,10 @@ def statistics_menu():
 @main.route('/rooms_visiting')
 def rooms_visiting():
     data = get_rooms_visiting()
+    head = list(data.values())[0].keys()
     return render_template('list.html',
-                           data={},
-                           thead=[],
+                           data=data,
+                           thead=head,
                            name="Посещаймость залов",
                            description="""Посещения по залам в течение дня """)
 
