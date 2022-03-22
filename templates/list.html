@@ -7,30 +7,36 @@
 <div class="start-content">
     <h1>Универсальный шаблон | {{name}}</h1>
     <p>{{description}}</p>
+    {% if msg == "" %}
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                {% for line in thead%}
+                {% for line in thead %}
                 <th>{{line}}</th>
                 {% endfor %}
             </tr>
         </thead>
 
 
-        {% for k, value in data.items()%}
+        {% for k, value in data.items() %}
         <tr>
             <th>{{k}}</th>
 
-            {% for v in value.values()%}
+            {% for v in value.values() %}
             <td>{{v}}</td>
-            {% endfor%}
+            {% endfor %}
 
         </tr>
         {% endfor %}
 
     </table>
 
+    {% else %}
+
+    <p>{{msg}}</p>
+
+    {% endif %}
     <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
 </div>
 {% endblock %}
