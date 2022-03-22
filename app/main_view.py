@@ -37,12 +37,19 @@ def statistics_menu():
 @main.route('/rooms_visiting')
 def rooms_visiting():
     data = get_rooms_visiting()
-    head = list(data.values())[0].keys()
+    head, msg = list(), ""
+    if data:
+        head = list(data.values())[0].keys()
+    else:
+        msg = "В данный момент в залах никого нет"
+
     return render_template('list.html',
                            data=data,
                            thead=head,
                            name="Посещаймость залов",
-                           description="""Посещения по залам в течение дня """)
+                           description="""Посещения по залам в течение дня 
+                           (данные есть только на время проведения мероприятия 7-12 марта)""",
+                           msg=msg)
 
 
 @main.route('/entities_rating')
@@ -54,4 +61,5 @@ def entities_rating():
                            thead=head,
                            name="Рейтинг экспонатов",
                            description="""Общий список экспонатов по посещаемости 
-                           и по средней общей оценке""")
+                           и по средней общей оценке""",
+                           msg="")

@@ -46,7 +46,14 @@ def get_entities_rating():
 def get_rooms_visiting():
     sql = """SELECT e.id, e.name, vr.startTime 
         from entities as e, visitingrecords as vr 
-        where e.id = vr.entityId and DATEDIFF(CURDATE(), vr.startTime) = 14;"""
+        where e.id = vr.entityId and 
+        DATEDIFF(CURDATE(), vr.startTime) = 0;"""
+    # datediff показывает разницу
+    # между текущей датой и датами, которые есть в бд
+    # чтобы посмотреть на не пустой результат
+    # нужно изменить значение с 0
+    # на количество времени, прошедшее со дня начала
+
     data = get_data(sql)
 
     stats = {}
