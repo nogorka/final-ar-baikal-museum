@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .logic.stat_computing import get_entities_rating, get_rooms_visiting
-
+from .logic.stat_computing import get_entities_rating, get_rooms_visiting, get_time_spend_in_front, get_avg_values
 stat = Blueprint('stat', __name__)
 
 
@@ -42,14 +41,18 @@ def entities_rating():
 
 @stat.route('/time_in_front')
 def time_in_front():
-    pass
+    data = get_time_spend_in_front()
+    print(data)
+    return "time in front"
 
 
-@stat.route('avg_values')
+@stat.route('/avg_values')
 def avg_values():
-    pass
+    data = get_avg_values()
+    print(data)
+    return "avg values"
 
 
-@stat.route('weekly')
-def avg_values():
-    pass
+@stat.route('/weekly')
+def weekly():
+    return "weekly"

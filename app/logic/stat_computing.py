@@ -9,10 +9,10 @@ def get_data(sql_query):
     return cursor.fetchall()
 
 
-def get_entities_rating():
-    sql = """SELECT e.id, e.name, 
-        vr.visualFeedback, vr.description, vr.completeness 
-        from entities as e, visitingrecords as vr 
+def get_avg_values_raw():
+    sql = """SELECT e.id, e.name,
+        vr.visualFeedback, vr.description, vr.completeness
+        from entities as e, visitingrecords as vr
         where e.id = vr.entityId;"""
     data = get_data(sql)
 
@@ -31,6 +31,12 @@ def get_entities_rating():
                               'count': 1,
                               'avg_total': 0}
 
+    return stats
+
+
+def get_entities_rating():
+    stats = get_avg_values_raw()
+
     newdata = {}
 
     for key, st in stats.items():
@@ -44,9 +50,9 @@ def get_entities_rating():
 
 
 def get_rooms_visiting():
-    sql = """SELECT e.id, e.name, vr.startTime 
-        from entities as e, visitingrecords as vr 
-        where e.id = vr.entityId and 
+    sql = """SELECT e.id, e.name, vr.startTime
+        from entities as e, visitingrecords as vr
+        where e.id = vr.entityId and
         DATEDIFF(CURDATE(), vr.startTime) = 0;"""
     # datediff показывает разницу
     # между текущей датой и датами, которые есть в бд
@@ -65,3 +71,47 @@ def get_rooms_visiting():
             stats[line[0]] = {'name': line[1],
                               'count': 1}
     return stats
+
+
+def get_avg_values():
+    stats = get_avg_values_raw()
+
+    newdata = {}
+
+    for key, st in stats.items():
+        st['avg_vis'] = st['visualFeedback'] / st['count']
+        st['avg_desc'] = st['description'] / st['count']
+        st['avg_comp'] = st['completeness'] / st['count']
+
+        newdata[key] = {'name': st['name'],
+                        'avg_vis': round(st['avg_vis'], 3),
+                        'avg_desc': round(st['avg_desc'], 3),
+                        'avg_comp': round(st['avg_comp'], 3),
+                        }
+    return newdata
+
+
+def get_time_spend_in_front():
+    sql = """SELECT e.id, e.name, vr.spentTimeSec
+        from entities as e, visitingrecords as vr
+        where e.id = vr.entityId;"""
+    data = get_data(sql)
+
+    stats = {}
+    for line in data:
+        if line[0] in stats.keys():
+            stats[line[0]]['timeInFront'].append(line[2])
+        else:
+            stats[line[0]] = {'name': line[1],
+                              'timeInFront': [line[2]]}
+
+    newdata = {}
+    for key, st in stats.items():
+
+        newdata[key] = {'name': st['name'],
+                        'avg': round(sum(st['timeInFront']) / len(st['timeInFront']), 3),
+                        'min':  min(st['timeInFront']),
+                        'max':  max(st['timeInFront']),
+                        }
+
+    return newdata
