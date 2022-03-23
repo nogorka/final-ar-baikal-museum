@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .logic.stat_computing import get_entities_rating, get_rooms_visiting, get_time_spend_in_front, get_avg_values
 stat = Blueprint('stat', __name__)
 
@@ -39,18 +39,43 @@ def entities_rating():
                            msg="")
 
 
+@stat.route('/time_in_front_data')
+def time_in_front_data():
+    data = get_time_spend_in_front()
+    return jsonify(data=data)
+
+
+@stat.route('/avg_values_data')
+def avg_values_data():
+    data = get_avg_values()
+    return jsonify(data=data)
+
+
 @stat.route('/time_in_front')
 def time_in_front():
-    data = get_time_spend_in_front()
-    print(data)
-    return "time in front"
+    return render_template("chart.html",
+                           url="/time_in_front_data",
+                           chart_label="Time spent in front",
+                           xlabel="entities",
+                           ylabel="views amount in sec",
+                           description="""Отображение средней, минимальной 
+                            и максимальной оценки времени, 
+                            которое пользователь провел перед экспонатом.""")
 
 
 @stat.route('/avg_values')
 def avg_values():
-    data = get_avg_values()
-    print(data)
-    return "avg values"
+    return render_template("chart.html",
+                           url="/avg_values_data",
+                           chart_label="Average values",
+                           xlabel="entities",
+                           ylabel="visiting amount",
+                           description="""Отображение для каждого экспоната 
+                           **средних оценок** пользователей отдельно 
+                           по каждому из критериев:
+                                1. визуальная составляющая;
+                                2. описание экспоната;
+                                3. законченность образа.""")
 
 
 @stat.route('/weekly')

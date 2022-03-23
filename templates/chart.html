@@ -1,0 +1,28 @@
+<!doctype html>
+{% extends 'index.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block content %}
+
+<div id="scene" class="start-content">
+
+
+    <h1>Универсальный шаблон 2 | {{name}}</h1>
+    <p>{{description}}</p>
+
+    <canvas id="chart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{url_for('static', filename='js/chartRender.js')}}"></script>
+    <script>
+        if (scene.hasLoaded) {
+            renderChart();
+        } else {
+            scene.addEventListener("load", renderChart('{{url}}', '{{chart_label}}', '{{xlabel}}', '{{ylabel}}'));
+        }
+    </script>
+
+    <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
+</div>
+{% endblock %}
