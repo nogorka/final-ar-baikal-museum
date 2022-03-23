@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .logic.stat_computing import get_entities_rating, get_rooms_visiting
 
 main = Blueprint('main', __name__)
 
