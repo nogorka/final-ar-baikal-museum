@@ -1,52 +1,64 @@
 "use strict";
 
-const d = document;
-
-
 function submitPredefined(el) {
     let form = el.closest("form");
-
     let selectedEl = onSelectionChange(form);
 
-    let data = { route: selectedEl.getAttribute("value"), type: "predefined" };
-    let url = '/predefined';
+    let data = {
+        route: selectedEl.getAttribute("value"),
+        type: "predefined"
+    };
 
-    submit(url, data);
+    submit(data);
 }
 
 function submitCustom(el) {
     let form = el.closest("form");
-
     let selectedStr = onMultiSelectionChange(form).toString();
 
-    let data = { route: selectedStr, type: "custom" };
-    let url = '/custom';
+    let data = {
+        route: selectedStr,
+        type: "custom"
+    };
 
-    submit(url, data);
+    submit(data);
 }
 
 
 function submitGenerated() {
 
-    let data = { route: "", type: "generated" };
-    let url = '/generated';
+    let data = {
+        route: "",
+        type: "generated"
+    };
 
-    submit(url, data);
+    submit(data);
 }
 
-function submit(url, data) {
+function pushToLocalStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+function getFromLocalStorage(key) {
+    JSON.parse(localStorage.getItem(key));
+}
+
+function submit(data) {
+
+    let url = "/build_route";
     let headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     };
-    console.log(data);
+
 
     fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: headers,
         body: JSON.stringify(data)
     })
-        .then((response) => {
-            console.log(response);
-        });
+        .then(response => response.json())
+        .then(route => {
+            pushToLocalStorage("route", route.route);
+            window.location.href = "/"; // redirect to start guide point
+        })
 }

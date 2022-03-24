@@ -10,52 +10,44 @@ def index():
     return render_template('start_page.html')
 
 
-@start.route('/generated', methods=['GET', 'POST'])
+@start.route('/generated')
 def generated():
-    if request.method == 'GET':
-        return render_template('generated.html')
-    else:
-        build_route(request.json)
-        return redirect(url_for('building'))
+    return render_template('generated.html')
 
 
-@start.route('/predefined', methods=['GET', 'POST'])
+@start.route('/predefined')
 def predefined():
-    if request.method == 'GET':
-        conn = mysql.connect()
-        cursor = conn.cursor()
+    conn = mysql.connect()
+    cursor = conn.cursor()
 
-        cursor.execute("SELECT * from predefinedroutes;")
-        data = cursor.fetchall()
-        return render_template('predefined.html', routes=data)
-    elif request.method == 'POST':
-        # print('received json', request.json)
-        build_route(request.json)
-        return redirect(url_for('building'))
+    cursor.execute("SELECT * from predefinedroutes;")
+    data = cursor.fetchall()
+    return render_template('predefined.html', routes=data)
 
 
-@start.route('/custom', methods=['GET', 'POST'])
+@start.route('/custom')
 def custom():
-    if request.method == 'GET':
-        conn = mysql.connect()
-        cursor = conn.cursor()
+    conn = mysql.connect()
+    cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT e.id, e.name, r.name from entities as e, rooms as r where e.roomId = r.id;")
-        data = cursor.fetchall()
-        dict_data = {}
+    cursor.execute("""SELECT e.id, e.name, r.name 
+                    from entities as e, rooms as r 
+                    where e.roomId = r.id;""")
+    data = cursor.fetchall()
+    dict_data = {}
 
-        for it in data:
-            if it[2] in dict_data.keys():
-                value = dict_data.get(it[2])
-                value.append([it[0], it[1]])
-            else:
-                dict_data[it[2]] = [[it[0], it[1]]]
+    for it in data:
+        if it[2] in dict_data.keys():
+            value = dict_data.get(it[2])
+            value.append([it[0], it[1]])
+        else:
+            dict_data[it[2]] = [[it[0], it[1]]]
 
-        return render_template('custom.html', rooms=dict_data)
-    elif request.method == 'POST':
-        # print('received json', request.json)
+    return render_template('custom.html', rooms=dict_data)
 
-        build_route(request.json)
-        return redirect(url_for('building'))
 
+@start.route('/build_route', methods=['POST'])
+def build_current_route():
+    route = build_route(request.json)
+
+    return jsonify(route=route)
