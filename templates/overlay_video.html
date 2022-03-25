@@ -3,8 +3,14 @@
 
 {% block title %}{{name}}{% endblock %}
 
+{% block assets %}
+
+<video id="my-video" src="{{ url_for('static', filename=overlay_src) }}" autoplay="true" preload="auto"></video>
+{% endblock %}
+
 {% block overlay %}
 
-<a-entity geometry="primitive: plane" material="src: {{ url_for('static', filename=overlay_src) }}"></a-entity>
+<a-entity geometry="primitive: plane" material="src: #my-video">
+</a-entity>
 
 {% endblock %}

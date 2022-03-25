@@ -15,7 +15,11 @@
 </head>
 
 <body>
+
     <a-scene>
+        <a-assets>
+            {% block assets %}{% endblock %}
+        </a-assets>
 
         <a-entity zappar-permissions-ui id="permissions"></a-entity>
         <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
