@@ -1,4 +1,5 @@
 from ..db import mysql
+import datetime
 
 
 def get_data(sql_query):
@@ -115,3 +116,29 @@ def get_time_spend_in_front():
                         }
 
     return newdata
+
+
+def get_weekly():
+    sql = """SELECT e.id, e.name, vr.startTime
+    from entities as e, visitingrecords as vr
+    where e.id = vr.entityId;"""
+    data = get_data(sql)
+
+    stats = {}
+
+    WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    for line in data:
+        f = '%Y-%m-%d %H:%M:%S'
+        timestamp = line[2].strftime(f)
+        day_id = datetime.datetime.strptime(timestamp, f).weekday()
+
+        if line[0] not in stats.keys():
+            days = {}
+            for name in WEEKDAYS:
+                days[name] = 0
+            stats[line[0]] = {'name': line[1], 'weekdays': days}
+
+        stats[line[0]]['weekdays'][WEEKDAYS[day_id]] += 1
+
+    return stats

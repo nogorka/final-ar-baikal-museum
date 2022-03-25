@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
-from .logic.stat_computing import get_entities_rating, get_rooms_visiting, get_time_spend_in_front, get_avg_values
+from .logic.stat_computing import get_entities_rating, get_rooms_visiting
+from .logic.stat_computing import get_time_spend_in_front, get_avg_values, get_weekly
 stat = Blueprint('stat', __name__)
 
 
@@ -11,16 +12,16 @@ def statistics_menu():
 @stat.route('/rooms_visiting')
 def rooms_visiting():
     data = get_rooms_visiting()
-    head, msg = list(), ""
+    head, msg = list(), ''
     if data:
         head = list(data.values())[0].keys()
     else:
-        msg = "В данный момент в залах никого нет"
+        msg = 'В данный момент в залах никого нет'
 
     return render_template('list.html',
                            data=data,
                            thead=head,
-                           name="Посещаймость залов",
+                           name='Посещаймость залов',
                            description="""Посещения по залам в течение дня 
                            (данные есть только на время проведения мероприятия 7-12 марта)""",
                            msg=msg)
@@ -33,10 +34,10 @@ def entities_rating():
     return render_template('list.html',
                            data=data,
                            thead=head,
-                           name="Рейтинг экспонатов",
+                           name='Рейтинг экспонатов',
                            description="""Общий список экспонатов по посещаемости 
                            и по средней общей оценке""",
-                           msg="")
+                           msg='')
 
 
 @stat.route('/time_in_front_data')
@@ -51,13 +52,19 @@ def avg_values_data():
     return jsonify(data=data)
 
 
+@stat.route('/weekly_data')
+def weekly_data():
+    data = get_weekly()
+    return jsonify(data=data)
+
+
 @stat.route('/time_in_front')
 def time_in_front():
-    return render_template("chart.html",
-                           url="/time_in_front_data",
-                           chart_label="Time spent in front",
-                           xlabel="entities",
-                           ylabel="views amount in sec",
+    return render_template('chart.html',
+                           url='/time_in_front_data',
+                           chart_label='Time spent in front',
+                           xlabel='entities',
+                           ylabel='views amount in sec',
                            description="""Отображение средней, минимальной 
                             и максимальной оценки времени, 
                             которое пользователь провел перед экспонатом.""")
@@ -65,11 +72,11 @@ def time_in_front():
 
 @stat.route('/avg_values')
 def avg_values():
-    return render_template("chart.html",
-                           url="/avg_values_data",
-                           chart_label="Average values",
-                           xlabel="entities",
-                           ylabel="visiting amount",
+    return render_template('chart.html',
+                           url='/avg_values_data',
+                           chart_label='Average values',
+                           xlabel='entities',
+                           ylabel='visiting amount',
                            description="""Отображение для каждого экспоната 
                            **средних оценок** пользователей отдельно 
                            по каждому из критериев:
@@ -80,4 +87,10 @@ def avg_values():
 
 @stat.route('/weekly')
 def weekly():
-    return "weekly"
+    return render_template('chart.html',
+                           url='/weekly_data',
+                           chart_label='Visiting by day of week',
+                           xlabel='Day of week',
+                           ylabel='visiting amount',
+                           description="""Отображение графика посещения всех 
+                           экспонатов в зависимости от дня недели.""")
