@@ -5,6 +5,6 @@
 
 {% block overlay %}
 
-<a-entity gltf-model="{{overlay_src}}"></a-entity>
+<a-image src="{{ url_for('static', filename=overlay_src) }}"></a-image>
 
 {% endblock %}

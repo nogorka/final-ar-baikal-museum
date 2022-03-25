@@ -41,4 +41,5 @@ def show(entity_id):
     return render_template(template,
                            name=name,
                            marker_src=targetUri,
-                           model_src=overlayUri)
+                           overlay_src=overlayUri[7:])  # [7:] to omit useless "/static" part of the path 
+                                                        # TODO: fix this
