@@ -141,4 +141,9 @@ def get_weekly():
 
         stats[line[0]]['weekdays'][WEEKDAYS[day_id]] += 1
 
-    return stats
+    newdata = {}
+    for _id, ex_line in stats.items():
+        ex_line['weekdays']['name'] = ex_line['name']
+        newdata[_id] = ex_line['weekdays']
+
+    return newdata
