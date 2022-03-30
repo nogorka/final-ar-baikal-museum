@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>NTO - BAIKAL PORTALS</title>
+    <script src="https://rawgit.com/ngokevin/aframe/posfirstdist/dist/aframe-master.min.js"></script> -->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+          varying vec3 vWorldPosition;
+          varying float vDistanceToCenter;
+
+          void main() {
+            vDistanceToCenter = clamp(length(position - vec3(0.0, 0.0, 0.0)), 0.0, 1.0);
+            vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+          #define RECIPROCAL_PI2 0.15915494
+          uniform float time;
+          uniform int isGrayscale;
+          uniform sampler2D pano;
+          uniform vec3 backgroundColor;
+          varying float vDistance;
+          varying float vDistanceToCenter;
+          varying vec3 vWorldPosition;
+
+          void main() {
+            float alpha;
+            float gray;
+            vec3 color;
+            vec3 direction = normalize(vWorldPosition - cameraPosition);
+            vec2 sampleUV;
+            vec2 sampleA;
+            vec2 sampleB;
+
+            float borderThickness = 0.94;
+
+            sampleUV.x = atan(direction.z, -direction.x) * -RECIPROCAL_PI2 + 0.5;
+            sampleUV.y = saturate(direction.y * 0.5  + 0.5);
+
+            // wobble
+            sampleA = sampleUV + sin(time/1000.0 + sampleUV.x * 24.0 + sampleUV.y * 18.0) * 0.004;
+            sampleB = sampleUV + sin(time/1000.0 + sampleUV.x * 24.0 + sampleUV.y * 18.0) * 0.005;
+
+            // Opacity portal effect, positive sin wave from 0.5 to 1.0.
+            alpha = sin(time / 800.0);
+            alpha = (alpha + 1.0) / 2.0;
+            alpha = mix(0.85, 1.0, alpha);
+            color = vec3(texture2D(pano, sampleB).x, texture2D(pano, sampleA).yz);
+            alpha = smoothstep(0.05, 1.0, 1.6 - vDistanceToCenter);
+            gl_FragColor = vec4(color, alpha);
+
+            if (isGrayscale == 1) {
+              gray = (color.r + color.g + color.b) / 3.0;
+              gl_FragColor = vec4(gray, gray, gray, alpha);
+            }
+          }
+    </script>
+    <script src="{{url_for('static', filename='js/portals.js')}}"></script>
+    <style>
+        html {
+            background: #111;
+        }
+    </style>
+</head>
+
+<body>
+    <a-scene debug>
+        <a-assets>
+            <a-mixin id="portal" look-at="#player" geometry="primitive: circle; segments: 64"
+                material="shader: shaderportal; backgroundColor: #333; transparent: true">
+            </a-mixin>
+        </a-assets>
+
+        <a-entity id="player" look-controls wasd-controls camera>
+            <a-cursor fuse="true" fuse-timeout="500" far="4" interval="100"></a-cursor>
+        </a-entity>
+
+
+        <a-entity id="portals" layout="type: circle; radius: 10; plane: xz" position="0 0 0">
+            <a-entity id="portal-home" class="portal" mixin="portal" interactive-portal="key: home" visible="false"
+                material="https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/360_F_366041898_gSewr7LZE2Vhf1a51U7IS1FBnUcvxBdU.jpg?v=1648047744117"
+                position="6 0 -6">
+                <a-text color="gray" font="roboto" value="Lobby" align="center" position="0 1.5 0"></a-text>
+            </a-entity>
+            <a-entity id="portal-baikal1" class="portal" mixin="portal" interactive-portal="key: baikal1" visible="true"
+                material="pano: https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-1-thumb.jpg?v=1644760383023"
+                position="6 0 6">
+                <a-text color="black" font="roboto" value="Lake" align="center" position="0 1.5 0"></a-text>
+            </a-entity>
+            <a-entity id="portal-baikal2" class="portal" mixin="portal" interactive-portal="key: baikal2" visible="true"
+                material="pano: https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-2-thumb.jpg?v=1644760383526"
+                position="-6 0 6">
+                <a-text color="black" font="roboto" value="Mountain" align="center" position="0 1.5 0"></a-text>
+            </a-entity>
+            <a-entity id="portal-baikal3" class="portal" mixin="portal" interactive-portal="key: baikal3" visible="true"
+                material="pano: https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-3-thumb.jpg?v=1644760383675"
+                position="-6 0 -6">
+                <a-text color="black" font="roboto" value="Hill" align="center" position="0 1.5 0"></a-text>
+            </a-entity>
+        </a-entity>
+
+        <a-sky
+            src="https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/360_F_366041898_gSewr7LZE2Vhf1a51U7IS1FBnUcvxBdU.jpg?v=1648047744117">
+        </a-sky>
+    </a-scene>
+</body>
+
+</html>

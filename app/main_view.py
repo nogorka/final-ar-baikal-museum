@@ -20,4 +20,4 @@ def gallery():
 
 @main.route('/portal')
 def portal():
-    return 'portal'
+    return render_template('main/portals.html')
