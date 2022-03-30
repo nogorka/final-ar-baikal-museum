@@ -15,20 +15,16 @@ def route():
     msg_route = parse_route_direct(route)
     name = f"Путь от {depart} до {dest}"
 
-    return render_template('guide_nav/route_message.html', name=name, message=msg_route)
+    data = get_data(dest)
+    _, targetUri, overlayType, overlayUri = data[0]
+
+    return render_template('guide_nav/route_message.html', name=name, message=msg_route, marker_src=targetUri[8:])
 
 
 @guide.route('/show/<entity_id>')
 def show(entity_id):
 
-    conn = mysql.connect()
-    cursor = conn.cursor()
-
-    sql_query = f"""SELECT name, targetUri, overlayType, overlayUri 
-                    FROM Entities WHERE id = {entity_id};"""
-
-    cursor.execute(sql_query)
-    data = cursor.fetchall()
+    data = get_data(entity_id)
 
     name, targetUri, overlayType, overlayUri = data[0]
 
@@ -43,5 +39,17 @@ def show(entity_id):
 
     return render_template(template,
                            name=name,
-                           marker_src=targetUri,        # TODO: fix this
-                           overlay_src=overlayUri[7:])  # [7:] to omit useless "/static" part of the path
+                           marker_src=targetUri[8:],    # TODO: fix this
+                           overlay_src=overlayUri[8:])  # [7:] to omit useless "/static" part of the path
+
+
+def get_data(entity_id):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    sql_query = f"""SELECT name, targetUri, overlayType, overlayUri 
+                    FROM Entities WHERE id = {entity_id};"""
+
+    cursor.execute(sql_query)
+    data = cursor.fetchall()
+    return data

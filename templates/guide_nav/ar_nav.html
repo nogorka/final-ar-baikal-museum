@@ -28,15 +28,16 @@
 
     <a-scene>
         <a-assets>
+            <a-asset-item id="target-file" src="{{ url_for('static', filename=marker_src) }}"></a-asset-item>
             {% block assets %}{% endblock %}
         </a-assets>
 
         <a-entity zappar-permissions-ui id="permissions"></a-entity>
         <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
 
-        <a-camera zappar-camera="user-facing: true;" />
+        <a-camera zappar-camera></a-camera>
 
-        <a-entity zappar-face id="face-anchor">
+        <a-entity zappar-image="#target-file" id="tracker">
             {% block overlay %}{% endblock %}
         </a-entity>
 
@@ -45,13 +46,19 @@
 
     <script>
 
-        let tracker = document.getElementById("face-anchor");
+        let tracker = document.getElementById("tracker");
 
         tracker.addEventListener("zappar-visible", () => {
+            console.log("Image has become visible");
             if (getFromLocalStorage("type") == "route") {
                 showCurEntity();
             }
         });
+
+        tracker.addEventListener("zappar-notvisible", () => {
+            console.log("Image is no longer visible");
+        });
+
     </script>
 
 </body>
