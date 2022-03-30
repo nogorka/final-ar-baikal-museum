@@ -3,8 +3,12 @@
 
 {% block title %}{{name}}{% endblock %}
 
+{% block button%}
+<button class="btn btn-warning route-button" onclick="moveToTheNextLoc()">
+    Перейти к следующему экспонату
+</button>
+{% endblock %}
+
 {% block overlay %}
-
 <a-image src="{{ url_for('static', filename=overlay_src) }}"></a-image>
-
 {% endblock %}

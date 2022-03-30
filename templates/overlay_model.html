@@ -3,8 +3,12 @@
 
 {% block title %}{{name}}{% endblock %}
 
+{% block button%}
+<button class="btn btn-warning route-button" onclick="moveToTheNextLoc()">
+    Перейти к следующему экспонату
+</button>
+{% endblock %}
+
 {% block overlay %}
-
 <a-entity gltf-model="{{ url_for('static', filename=overlay_src) }}" scale="0.5 0.5 0.5"></a-entity>
-
 {% endblock %}

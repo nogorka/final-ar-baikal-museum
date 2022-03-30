@@ -1,6 +1,5 @@
 "use strict";
 
-
 function pushToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
@@ -14,43 +13,35 @@ function getCurRouteIndex() {
 
 function getRouteEl(id) {
     let array = getFromLocalStorage("route");
-    console.log(array, id, array[id]);
     return array[id]
 }
 
 function moveToTheNextLoc() {
     let curIndx = getCurRouteIndex();
-    let routeDist = getFromLocalStorage('route').length - 1;
+    let prevIndx = curIndx - 1;
+    let routeDist = getFromLocalStorage("route").length;
 
     if (curIndx < routeDist) {
-        let url = "/route?depart=" + getRouteEl(curIndx) + "&dest=" + getRouteEl(curIndx + 1);
-        pushToLocalStorage("routeIndex", curIndx + 1);
+        let url = "/route?depart=" + getRouteEl(prevIndx) + "&dest=" + getRouteEl(curIndx);
+        pushToLocalStorage("type", "route");
 
         window.location.href = url;
-        // console.log(url);
     } else {
         window.location.href = "/";
     }
 }
 
 function showCurEntity() {
-    let curIndx = getCurRouteIndex()+1;
-    let curEntity = getFromLocalStorage('route')[curIndx];
-    // console.log("/show/" + curEntity);
-    window.location.href = "/show/" + curEntity;
+    let curIndx = getCurRouteIndex();
+    let curEntity = getFromLocalStorage("route")[curIndx];
+
+    pushToLocalStorage("type", "show");
+    pushToLocalStorage("routeIndex", curIndx + 1);
+
+    if (curEntity == 0) {
+        window.location.href = "/";
+    }
+    else {
+        window.location.href = "/show/" + curEntity;
+    }
 }
-
-let tracker = document.getElementById("face-anchor");
-
-tracker.addEventListener("zappar-visible", () => {
-    console.log("move to the next location");
-
-    showCurEntity();
-
-});
-
-tracker.addEventListener("zappar-notvisible", () => {
-    console.log("Face is no longer visible");
-});
-
-

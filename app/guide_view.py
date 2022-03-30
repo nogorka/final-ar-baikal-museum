@@ -21,8 +21,6 @@ def route():
 @guide.route('/show/<entity_id>')
 def show(entity_id):
 
-    print("show/"+entity_id)
-
     conn = mysql.connect()
     cursor = conn.cursor()
 
@@ -45,6 +43,6 @@ def show(entity_id):
 
     return render_template(template,
                            name=name,
-                           marker_src=targetUri,
+                           marker_src=targetUri,        # TODO: fix this
                            overlay_src=overlayUri[7:])  # [7:] to omit useless "/static" part of the path
-    # TODO: fix this
+                           

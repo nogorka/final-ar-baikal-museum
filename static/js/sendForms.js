@@ -24,7 +24,6 @@ function submitCustom(el) {
     submit(data);
 }
 
-
 function submitGenerated() {
 
     let data = {
@@ -38,6 +37,7 @@ function submitGenerated() {
 function pushToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
+
 function getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
@@ -68,10 +68,12 @@ function submit(data) {
         .then(response => response.json())
         .then(route => {
             pushToLocalStorage("route", route.route);
-            pushToLocalStorage("routeIndex", 0);
+            pushToLocalStorage("routeIndex", 1);
+            pushToLocalStorage("type", "route");
 
             let curIndx = getCurRouteIndex();
-            let url = "/route?depart=" + getRouteEl(curIndx) + "&dest=" + getRouteEl(curIndx + 1);
+            let url = "/route?depart=" + getRouteEl(curIndx - 1) + "&dest=" + getRouteEl(curIndx);
+
             window.location.href = url;
         })
 }
