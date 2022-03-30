@@ -1,5 +1,5 @@
 <!doctype html>
-{% extends 'ar_nav.html' %}
+{% extends 'guide_nav/ar_nav.html' %}
 
 {% block title %}{{name}}{% endblock %}
 
@@ -10,5 +10,5 @@
 {% endblock %}
 
 {% block overlay %}
-<a-image src="{{ url_for('static', filename=overlay_src) }}"></a-image>
+<a-entity gltf-model="{{ url_for('static', filename=overlay_src) }}" scale="0.5 0.5 0.5"></a-entity>
 {% endblock %}

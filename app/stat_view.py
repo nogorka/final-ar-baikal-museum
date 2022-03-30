@@ -6,7 +6,7 @@ stat = Blueprint('stat', __name__)
 
 @stat.route('/statistics')
 def statistics_menu():
-    return render_template('statistics.html')
+    return render_template('stat/statistics.html')
 
 
 @stat.route('/rooms_visiting')
@@ -18,7 +18,7 @@ def rooms_visiting():
     else:
         msg = 'В данный момент в залах никого нет'
 
-    return render_template('list.html',
+    return render_template('stat/list.html',
                            data=data,
                            thead=head,
                            name='Посещаймость залов',
@@ -31,7 +31,7 @@ def rooms_visiting():
 def entities_rating():
     data = get_entities_rating()
     head = list(data.values())[0].keys()
-    return render_template('list.html',
+    return render_template('stat/list.html',
                            data=data,
                            thead=head,
                            name='Рейтинг экспонатов',
@@ -60,11 +60,11 @@ def weekly_data():
 
 @stat.route('/time_in_front')
 def time_in_front():
-    return render_template('chart.html',
+    return render_template('stat/chart.html',
                            url='/time_in_front_data',
-                           chart_label='Time spent in front',
-                           xlabel='entities',
-                           ylabel='views amount in sec',
+                           chart_label='Оценка потраченного времени (сек)',
+                           xlabel='Экспонаты',
+                           ylabel='Время потраченное (сек)',
                            description="""Отображение средней, минимальной 
                             и максимальной оценки времени, 
                             которое пользователь провел перед экспонатом.""")
@@ -72,11 +72,11 @@ def time_in_front():
 
 @stat.route('/avg_values')
 def avg_values():
-    return render_template('chart.html',
+    return render_template('stat/chart.html',
                            url='/avg_values_data',
-                           chart_label='Average values',
-                           xlabel='entities',
-                           ylabel='visiting amount',
+                           chart_label='Средние оценки по критериям',
+                           xlabel='Экспонаты',
+                           ylabel='Оценка',
                            description="""Отображение для каждого экспоната 
                            **средних оценок** пользователей отдельно 
                            по каждому из критериев:
@@ -87,10 +87,10 @@ def avg_values():
 
 @stat.route('/weekly')
 def weekly():
-    return render_template('chart.html',
+    return render_template('stat/chart.html',
                            url='/weekly_data',
-                           chart_label='Visiting by day of week',
-                           xlabel='Day of week',
-                           ylabel='visiting amount',
+                           chart_label='Посещение по дням недели',
+                           xlabel='День недели',
+                           ylabel='Количество посещений',
                            description="""Отображение графика посещения всех 
                            экспонатов в зависимости от дня недели.""")

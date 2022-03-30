@@ -5,12 +5,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def welcome():
-    return render_template('welcome.html')
-
-
-@main.route('/guide')
-def guide():
-    return render_template('start_page.html')
+    return render_template('main/welcome.html')
 
 
 @main.route('/photobooth')

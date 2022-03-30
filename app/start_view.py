@@ -7,12 +7,12 @@ start = Blueprint('start', __name__)
 
 @start.route('/guide')
 def index():
-    return render_template('start_page.html')
+    return render_template('guide_start/start_page.html')
 
 
 @start.route('/generated')
 def generated():
-    return render_template('generated.html')
+    return render_template('guide_start/generated.html')
 
 
 @start.route('/predefined')
@@ -20,9 +20,9 @@ def predefined():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * from predefinedroutes;")
+    cursor.execute('SELECT * from predefinedroutes;')
     data = cursor.fetchall()
-    return render_template('predefined.html', routes=data)
+    return render_template('guide_start/predefined.html', routes=data)
 
 
 @start.route('/custom')
@@ -43,7 +43,7 @@ def custom():
         else:
             dict_data[it[2]] = [[it[0], it[1]]]
 
-    return render_template('custom.html', rooms=dict_data)
+    return render_template('guide_start/custom.html', rooms=dict_data)
 
 
 @start.route('/build_route', methods=['POST'])
