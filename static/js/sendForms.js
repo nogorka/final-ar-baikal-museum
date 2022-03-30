@@ -48,7 +48,6 @@ function getCurRouteIndex() {
 
 function getRouteEl(id) {
     let array = getFromLocalStorage("route");
-    console.log(array, id, array[id]);
     return array[id]
 }
 
@@ -70,7 +69,9 @@ function submit(data) {
         .then(route => {
             pushToLocalStorage("route", route.route);
             pushToLocalStorage("routeIndex", 0);
-            let url = "/route?depart=" + getRouteEl(getCurRouteIndex()) + "&dest=" + getRouteEl(getCurRouteIndex() + 1); // redirect to start guide point
+
+            let curIndx = getCurRouteIndex();
+            let url = "/route?depart=" + getRouteEl(curIndx) + "&dest=" + getRouteEl(curIndx + 1);
             window.location.href = url;
         })
 }
