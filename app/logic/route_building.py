@@ -67,3 +67,33 @@ def build_route(data):  # return list
         route = None
 
     return route
+
+
+def get_directions(depart, dest):
+    matrix = open_json(get_route_json())
+    for key, value in matrix.items():
+        if key == depart:
+            for k, v in value.items():
+                if k == dest:
+                    return v.split(',')
+
+    return None
+
+
+def parse_route_direct(route):
+    if route:
+        msg = ""
+        for el in route:
+            if el == 'f':
+                msg += "идите прямо, "
+            if el == 'b':
+                msg += "идите назад, "
+            if len(el) > 1:
+                angle = el[1:]
+                turn = el[0]
+                if turn == 'r':
+                    msg += f"поверните направо на {angle} градусов, "
+                if turn == 'l':
+                    msg += f"поверните налево на {angle} градусов, "
+        return(msg[:-2]+'.')
+    return None

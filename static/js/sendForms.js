@@ -39,7 +39,17 @@ function pushToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 function getFromLocalStorage(key) {
-    JSON.parse(localStorage.getItem(key));
+    return JSON.parse(localStorage.getItem(key));
+}
+
+function getCurRouteIndex() {
+    return Number(localStorage.getItem("routeIndex"));
+}
+
+function getRouteEl(id) {
+    let array = getFromLocalStorage("route");
+    console.log(array, id, array[id]);
+    return array[id]
 }
 
 function submit(data) {
@@ -59,6 +69,8 @@ function submit(data) {
         .then(response => response.json())
         .then(route => {
             pushToLocalStorage("route", route.route);
-            window.location.href = "/"; // redirect to start guide point
+            pushToLocalStorage("routeIndex", 0);
+            let url = "/route?depart=" + getRouteEl(getCurRouteIndex()) + "&dest=" + getRouteEl(getCurRouteIndex() + 1); // redirect to start guide point
+            window.location.href = url;
         })
 }

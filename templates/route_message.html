@@ -1,0 +1,11 @@
+<!doctype html>
+{% extends 'ar_nav.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block message %}{{message}}{% endblock %}
+
+{% block overlay %}
+<a-entity></a-entity>
+<script type="module" src="{{url_for('static', filename='js/navigation.js')}}"></script>
+{% endblock %}

@@ -15,8 +15,12 @@
 </head>
 
 <body>
+    {% block message %}{% endblock %}
+    <script src="{{url_for('static', filename='js/navigation.js')}}"></script>
 
-    <a-scene>
+    <button  style="z-index: 20;" onclick="moveToTheNextLoc()">Go to the next entity</button>
+
+    <a-scene style="z-index: -20;">
         <a-assets>
             {% block assets %}{% endblock %}
         </a-assets>
