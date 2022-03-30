@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/0.3.29/zappar-aframe.js"></script>
+
+    <link rel="icon" href="{{ url_for('static',filename='assets/favicon.png') }}">
+
+    <title>Интерактивная галерея | Музей капля Байкала</title>
+
+    <style>
+        .container {
+            scroll-snap-type: x mandatory;
+        }
+
+        .slides {
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]" loading-screen="backgroundColor: #344A60">
+        <a-assets>
+            <a-asset-item id="target-file" src="{{ url_for('static', filename='assets/markers/zpt/5.zpt') }}">
+            </a-asset-item>
+
+            <img id="next" crossorigin="anonymous"
+                src="https://cdn.glitch.global/e6eda915-1641-4e7f-a71c-e08238b5b19e/forward%20(2).png?v=1642520204086" />
+            <img id="prev" crossorigin="anonymous"
+                src="https://cdn.glitch.global/e6eda915-1641-4e7f-a71c-e08238b5b19e/forward%20(1).png?v=1642520144498" />
+
+            <video id="video1" src="{{ url_for('static', filename='assets/overlays/1.mp4') }}" autoplay="true"
+                preload="auto"></video>
+            <video id="video2" src="{{ url_for('static', filename='assets/overlays/2.mp4') }}" autoplay="true"
+                preload="auto"></video>
+        </a-assets>
+
+        <a-entity zappar-permissions-ui id="permissions"></a-entity>
+        <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+        <a-camera zappar-camera cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
+
+        <a-entity zappar-image="#target-file" id="tracker">
+            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="0.7 0 0"
+                scale="0.2 0.2 0.2" data-clickable onclick="OnNextClick()"></a-entity>
+
+            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-0.7 0 0"
+                scale="0.2 0.2 0.2" data-clickable onclick="OnPrevClick()"></a-entity>
+            <a-entity class="container">
+                <a-image visible="true" class="slides" src="{{ url_for('static', filename='assets/overlays/3.jpg') }}">
+                </a-image>
+                <a-image visible="false" class="slides" src="{{ url_for('static', filename='assets/overlays/4.jpg') }}">
+                </a-image>
+                <a-entity visible="false" class="slides" geometry="primitive: plane" material="src: #video1"></a-entity>
+                <a-entity visible="false" class="slides" geometry="primitive: plane" material="src: #video2"></a-entity>
+                <a-entity visible="false" class="slides" scale="0.5 0.5 0.5"
+                    gltf-model="{{ url_for('static', filename='assets/overlays/8.glb') }}">
+                </a-entity>
+                <a-entity visible="false" class="slides" scale="0.5 0.5 0.5"
+                    gltf-model="{{ url_for('static', filename='assets/overlays/9_2.glb') }}">
+                </a-entity>
+            </a-entity>
+        </a-entity>
+
+        </a-entity>
+    </a-scene>
+
+    <script>
+
+        let tracker = document.getElementById("tracker");
+
+        tracker.addEventListener("zappar-visible", () => {
+            console.log("Image has become visible");
+        });
+
+        tracker.addEventListener("zappar-notvisible", () => {
+            console.log("Image is no longer visible");
+        });
+
+        var curr = 0;
+        var picAmount = 6;
+        var d = document;
+
+        function OnNextClick() {
+            if (curr < picAmount - 1) {
+                curr++;
+                d.getElementById("pic" + curr).setAttribute("visible", true);
+                d.getElementById("pic" + (curr - 1)).setAttribute("visible", false);
+            }
+        }
+
+        function OnPrevClick() {
+            if (curr > 0) {
+                curr--;
+                d.getElementById("pic" + curr).setAttribute("visible", true);
+                d.getElementById("pic" + (curr + 1)).setAttribute("visible", false);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

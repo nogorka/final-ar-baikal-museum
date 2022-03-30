@@ -15,7 +15,7 @@ def photobooth():
 
 @main.route('/gallery')
 def gallery():
-    return 'gallery'
+    return render_template('main/gallery.html')
 
 
 @main.route('/portal')
