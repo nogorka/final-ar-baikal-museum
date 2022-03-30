@@ -10,7 +10,7 @@ def welcome():
 
 @main.route('/photobooth')
 def photobooth():
-    return "photobooth"
+    return render_template('main/photobooth.html')
 
 
 @main.route('/gallery')

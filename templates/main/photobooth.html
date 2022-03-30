@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/0.3.29/zappar-aframe.js"></script>
+
+    <link rel="icon" href="{{ url_for('static',filename='assets/favicon.png') }}">
+
+    <title>Фотобудка | Музей капля Байкала</title>
+
+</head>
+
+<body>
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]">
+        <a-assets>
+
+            <img id="hat" crossorigin="anonymous"
+                src="https://cdn.glitch.global/8cd2ee54-a770-4224-88fc-e8ed68987492/Illyustratsia_bez_nazvania%20(1).png?v=1642923324848" />
+            <img id="flower-crown" crossorigin="anonymous"
+                src="https://cdn.glitch.global/7e2630c1-99c8-4217-8fd8-9b8f7550840f/%D0%B2%D0%B5%D0%BD%D0%BE%D0%BA.png?v=1642931873097" />
+
+            <img id="next" crossorigin="anonymous"
+                src="https://cdn.glitch.global/8cd2ee54-a770-4224-88fc-e8ed68987492/share%20%E2%80%94%20%D0%BA%D0%BE%D0%BF%D0%B8%D1%8F.png?v=1642502993546" />
+            <img id="prev" crossorigin="anonymous"
+                src="https://cdn.glitch.global/8cd2ee54-a770-4224-88fc-e8ed68987492/imgonline-com-ua-Mirror-84HIe9wLNvNME3UZ.png?v=1642503099051" />
+        </a-assets>
+
+        <a-entity zappar-permissions-ui id="permissions"></a-entity>
+        <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+        <a-entity camera zappar-camera="user-facing: true;"> </a-entity>
+
+        <a-entity zappar-face id="face-track">
+
+            <a-entity>
+                <a-entity visible="true" id="facemesh0" geometry="primitive: plane;"
+                    material="src:#hat; transparent: true;" rotation="0 0 0" scale="1.5 1.5 1.5" position="0 0.7 .8">
+                </a-entity>
+                <a-entity visible="false" id="facemesh1" geometry="primitive: plane;"
+                    material="src:#flower-crown; transparent: true;" rotation="0 0 0" scale="1.5 1.5 1.5"
+                    position="0 0.7 .8">
+                </a-entity>
+            </a-entity>
+
+            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="0.5 -1.2 0"
+                scale="0.5 0.5 0.5" data-clickable onclick="OnNextClick()"></a-entity>
+
+            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-0.5 -1.2 0"
+                scale="0.5 0.5 0.5" data-clickable onclick="OnPrevClick()"></a-entity>
+        </a-entity>
+    </a-scene>
+
+    <script>
+        var curr = 0;
+        var maskAmount = 2;
+        var d = document; function OnNextClick() {
+            if (curr < maskAmount - 1) {
+                curr++;
+                d.getElementById("facemesh" + curr).setAttribute("visible", true);
+                d.getElementById("facemesh" + (curr - 1)).setAttribute("visible", false);
+            }
+        }
+
+        function OnPrevClick() {
+            if (curr > 0) {
+                curr--;
+                d.getElementById("facemesh" + curr).setAttribute("visible", true);
+                d.getElementById("facemesh" + (curr + 1)).setAttribute("visible", false);
+            }
+        }
+    </script>
+</body>
+
+</html>
