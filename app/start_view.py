@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .logic.route_building import build_route
-from .db import mysql
+from .db import mysql_select
 
 start = Blueprint('start', __name__)
 
@@ -17,23 +17,16 @@ def generated():
 
 @start.route('/predefined')
 def predefined():
-    conn = mysql.connect()
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT * from predefinedroutes;')
-    data = cursor.fetchall()
+    data = mysql_select("""SELECT * from predefinedroutes;""")
     return render_template('guide_start/predefined.html', routes=data)
 
 
 @start.route('/custom')
 def custom():
-    conn = mysql.connect()
-    cursor = conn.cursor()
 
-    cursor.execute("""SELECT e.id, e.name, r.name 
+    data = mysql_select("""SELECT e.id, e.name, r.name 
                     from entities as e, rooms as r 
                     where e.roomId = r.id;""")
-    data = cursor.fetchall()
     dict_data = {}
 
     for it in data:

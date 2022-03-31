@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .logic.route_building import build_route, get_directions, parse_route_direct
-from .db import mysql
+from .db import mysql_select
 
 guide = Blueprint('guide', __name__)
 
@@ -15,16 +15,25 @@ def route():
     msg_route = parse_route_direct(route).capitalize()
     name = f"Путь от {depart} до {dest}"
 
-    data = get_data(dest)
-    _, targetUri, overlayType, overlayUri = data[0]
+    sql = f"""SELECT name, targetUri, overlayType, overlayUri 
+                    FROM Entities WHERE id = {dest};"""
+    data = mysql_select(sql)
 
-    return render_template('guide_nav/route_message.html', name=name, message=msg_route, marker_src=targetUri)
+    if data:
+        _, targetUri, overlayType, overlayUri = data[0]
+
+        return render_template('guide_nav/route_message.html', name=name, message=msg_route, marker_src=targetUri)
+
+    msg_route += " Для завершения экскурсии наведите повторно на последний экспонат."
+    return render_template('guide_nav/route_message.html', name=name, message=msg_route, marker_src="assets/markers/zpt/9.zpt")
 
 
 @guide.route('/show/<entity_id>')
 def show(entity_id):
 
-    data = get_data(entity_id)
+    sql = f"""SELECT name, targetUri, overlayType, overlayUri 
+                    FROM Entities WHERE id = {entity_id};"""
+    data = mysql_select(sql)
 
     name, targetUri, overlayType, overlayUri = data[0]
 
@@ -41,15 +50,3 @@ def show(entity_id):
                            name=name,
                            marker_src=targetUri,
                            overlay_src=overlayUri)
-
-
-def get_data(entity_id):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-
-    sql_query = f"""SELECT name, targetUri, overlayType, overlayUri 
-                    FROM Entities WHERE id = {entity_id};"""
-
-    cursor.execute(sql_query)
-    data = cursor.fetchall()
-    return data
