@@ -14,10 +14,52 @@
 
     <title>Фотобудка | Музей капля Байкала</title>
 
+    <style>
+        .btn-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            padding: 10px 0px;
+            background-color: rgba(251, 210, 64, 0.42);
+        }
+
+        button {
+            z-index: 20;
+            display: block;
+
+            width: 70px;
+            height: 70px;
+
+            border: 0px;
+
+            background-repeat: no-repeat;
+            background-color: transparent;
+            background-clip: border-box;
+            background-size: cover;
+        }
+
+        #next {
+            background-image: url("{{url_for('static', filename='assets/icons/next.png')}}");
+        }
+
+        #prev {
+            background-image: url("{{url_for('static', filename='assets/icons/prev.png')}}");
+        }
+
+        #snapshot {
+            background-image: url("{{url_for('static', filename='assets/icons/snapshot.png')}}");
+        }
+    </style>
+
 </head>
 
 <body>
-    <a-scene cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]">
+    <div class="btn-group">
+        <button id="prev" onclick="OnPrevClick()"></button>
+        <button id="snapshot" onclick="getScreenshot()"></button>
+        <button id="next" onclick="OnNextClick()"></button>
+    </div>
+    <a-scene style="z-index: -20;">
         <a-assets>
 
             <img id="hat" crossorigin="anonymous"
@@ -25,10 +67,6 @@
             <img id="flower-crown" crossorigin="anonymous"
                 src="https://cdn.glitch.global/7e2630c1-99c8-4217-8fd8-9b8f7550840f/%D0%B2%D0%B5%D0%BD%D0%BE%D0%BA.png?v=1642931873097" />
 
-            <img id="next" crossorigin="anonymous"
-                src="https://cdn.glitch.global/8cd2ee54-a770-4224-88fc-e8ed68987492/share%20%E2%80%94%20%D0%BA%D0%BE%D0%BF%D0%B8%D1%8F.png?v=1642502993546" />
-            <img id="prev" crossorigin="anonymous"
-                src="https://cdn.glitch.global/8cd2ee54-a770-4224-88fc-e8ed68987492/imgonline-com-ua-Mirror-84HIe9wLNvNME3UZ.png?v=1642503099051" />
         </a-assets>
 
         <a-entity zappar-permissions-ui id="permissions"></a-entity>
@@ -48,11 +86,6 @@
                 </a-entity>
             </a-entity>
 
-            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="0.5 -1.2 0"
-                scale="0.5 0.5 0.5" data-clickable onclick="OnNextClick()"></a-entity>
-
-            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-0.5 -1.2 0"
-                scale="0.5 0.5 0.5" data-clickable onclick="OnPrevClick()"></a-entity>
         </a-entity>
     </a-scene>
 
@@ -73,6 +106,10 @@
                 d.getElementById("facemesh" + curr).setAttribute("visible", true);
                 d.getElementById("facemesh" + (curr + 1)).setAttribute("visible", false);
             }
+        }
+
+        function getScreenshot() {
+            document.querySelector('a-scene').components.screenshot.capture('perspective');
         }
     </script>
 </body>
