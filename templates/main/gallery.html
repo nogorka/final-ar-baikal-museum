@@ -14,15 +14,6 @@
 
     <title>Интерактивная галерея | Музей капля Байкала</title>
 
-    <style>
-        .container {
-            scroll-snap-type: x mandatory;
-        }
-
-        .slides {
-            scroll-snap-align: start;
-        }
-    </style>
 </head>
 
 <body>
@@ -49,24 +40,23 @@
         <a-camera zappar-camera cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
 
         <a-entity zappar-image="target: #target-file" id="tracker">
-            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="0.7 0 0"
-                scale="0.2 0.2 0.2" data-clickable onclick="OnNextClick()"></a-entity>
+            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="1.5 0 0"
+                scale="0.5 0.5 0.5" data-clickable onclick="OnNextClick()"></a-entity>
 
-            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-0.7 0 0"
-                scale="0.2 0.2 0.2" data-clickable onclick="OnPrevClick()"></a-entity>
-            <a-entity class="container">
-                <a-image visible="true" class="slides" src="{{ url_for('static', filename='assets/overlays/3.jpg') }}">
+            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-1.5 0 0"
+                scale="0.5 0.5 0.5" data-clickable onclick="OnPrevClick()"></a-entity>
+
+            <a-entity>
+                <a-image id="pic0" visible="true" src="{{ url_for('static', filename='assets/overlays/3.jpg') }}">
                 </a-image>
-                <a-image visible="false" class="slides" src="{{ url_for('static', filename='assets/overlays/4.jpg') }}">
+                <a-image id="pic1" visible="false" src="{{ url_for('static', filename='assets/overlays/4.jpg') }}">
                 </a-image>
-                <a-entity visible="false" class="slides" geometry="primitive: plane" material="src: #video1"></a-entity>
-                <a-entity visible="false" class="slides" geometry="primitive: plane" material="src: #video2"></a-entity>
-                <a-entity visible="false" class="slides" scale="0.5 0.5 0.5"
-                    gltf-model="{{ url_for('static', filename='assets/overlays/8.glb') }}">
-                </a-entity>
-                <a-entity visible="false" class="slides" scale="0.5 0.5 0.5"
-                    gltf-model="{{ url_for('static', filename='assets/overlays/9_2.glb') }}">
-                </a-entity>
+                <a-entity id="pic2" visible="false" geometry="primitive: plane" material="src: #video1"></a-entity>
+                <a-entity id="pic3" visible="false" geometry="primitive: plane" material="src: #video2"></a-entity>
+                <a-entity id="pic4" visible="false" scale="0.5 0.5 0.5"
+                    gltf-model="{{ url_for('static', filename='assets/overlays/8.glb') }}"></a-entity>
+                <a-entity id="pic5" visible="false" scale="0.5 0.5 0.5" rotation="90 0 0"
+                    gltf-model="{{ url_for('static', filename='assets/overlays/9_2.glb') }}"></a-entity>
             </a-entity>
         </a-entity>
 
