@@ -7,7 +7,6 @@ async function getData(url) {
     if (response.ok) {
         let json = await response.json();
         const dataset = JSON.parse(JSON.stringify(json));
-        console.log(dataset)
         return dataset
 
     } else {
@@ -17,10 +16,8 @@ async function getData(url) {
 
 async function renderChart(url, chartLabel, xlabel, ylabel) {
 
-
     const type = 'bar';
     let json = await getData(url);
-    console.log(json);
     let dataset = {}
     let mainLabels = []
     let labels = [];
