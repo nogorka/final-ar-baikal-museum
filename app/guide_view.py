@@ -12,7 +12,7 @@ def route():
     dest = request.args.get('dest')
 
     route = get_directions(depart, dest)
-    msg_route = parse_route_direct(route)
+    msg_route = parse_route_direct(route).capitalize()
     name = f"Путь от {depart} до {dest}"
 
     data = get_data(dest)
@@ -39,8 +39,8 @@ def show(entity_id):
 
     return render_template(template,
                            name=name,
-                           marker_src=targetUri, 
-                           overlay_src=overlayUri) 
+                           marker_src=targetUri,
+                           overlay_src=overlayUri)
 
 
 def get_data(entity_id):
