@@ -18,9 +18,10 @@
 
 <body>
 
-    <a-scene cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]" loading-screen="backgroundColor: #344A60">
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects: [data-clickable]">
         <a-assets>
-            <a-asset-item id="target-file" src="{{ url_for('static', filename='assets/markers/zpt/5.zpt') }}">
+            <a-asset-item id="target-file" 
+                src="{{ url_for('static', filename='assets/markers/zpt/5.zpt') }}">
             </a-asset-item>
 
             <img id="next" crossorigin="anonymous"
@@ -28,52 +29,53 @@
             <img id="prev" crossorigin="anonymous"
                 src="https://cdn.glitch.global/e6eda915-1641-4e7f-a71c-e08238b5b19e/forward%20(1).png?v=1642520144498" />
 
-            <video id="video1" src="{{ url_for('static', filename='assets/overlays/1.mp4') }}" autoplay="true"
-                preload="auto"></video>
-            <video id="video2" src="{{ url_for('static', filename='assets/overlays/2.mp4') }}" autoplay="true"
-                preload="auto"></video>
+            <video src="{{ url_for('static', filename='assets/overlays/1.mp4') }}" 
+                id="video1" autoplay="true" preload="auto"></video>
+            <video src="{{ url_for('static', filename='assets/overlays/2.mp4') }}"
+                id="video2" autoplay="true" preload="auto"></video>
         </a-assets>
 
         <a-entity zappar-permissions-ui id="permissions"></a-entity>
         <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
 
-        <a-camera zappar-camera cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
+        <a-camera 
+            zappar-camera cursor="rayOrigin: mouse; fuse: false;" 
+            raycaster="objects: .collidable"></a-camera>
 
         <a-entity zappar-image="target: #target-file" id="tracker">
-            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="1.5 0 0"
-                scale="0.5 0.5 0.5" data-clickable onclick="OnNextClick()"></a-entity>
+            <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" 
+                position="1.5 0 0" scale="0.5 0.5 0.5" data-clickable onclick="OnNextClick()">
+            </a-entity>
 
-            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" position="-1.5 0 0"
-                scale="0.5 0.5 0.5" data-clickable onclick="OnPrevClick()"></a-entity>
+            <a-entity geometry="primitive: plane" material="src: #prev; transparent: true;" 
+                position="-1.5 0 0" scale="0.5 0.5 0.5" data-clickable onclick="OnPrevClick()">
+            </a-entity>
 
             <a-entity>
-                <a-image id="pic0" visible="true" src="{{ url_for('static', filename='assets/overlays/3.jpg') }}">
-                </a-image>
-                <a-image id="pic1" visible="false" src="{{ url_for('static', filename='assets/overlays/4.jpg') }}">
-                </a-image>
-                <a-entity id="pic2" visible="false" geometry="primitive: plane" material="src: #video1"></a-entity>
-                <a-entity id="pic3" visible="false" geometry="primitive: plane" material="src: #video2"></a-entity>
+                <a-image src="{{ url_for('static', filename='assets/overlays/3.jpg') }}"
+                    id="pic0" visible="true"></a-image>
+                <a-image src="{{ url_for('static', filename='assets/overlays/4.jpg') }}"
+                    id="pic2" visible="false"></a-image>
+
+                <a-entity id="pic2" visible="false" geometry="primitive: plane" 
+                    material="src: #video1"></a-entity>
+                <a-entity id="pic3" visible="false" geometry="primitive: plane" 
+                    material="src: #video2"></a-entity>
+
                 <a-entity id="pic4" visible="false" scale="0.5 0.5 0.5"
-                    gltf-model="{{ url_for('static', filename='assets/overlays/8.glb') }}"></a-entity>
+                    gltf-model="{{ url_for('static', filename='assets/overlays/8.glb') }}">
+                </a-entity>
                 <a-entity id="pic5" visible="false" scale="0.5 0.5 0.5" rotation="90 0 0"
-                    gltf-model="{{ url_for('static', filename='assets/overlays/9_2.glb') }}"></a-entity>
+                    gltf-model="{{ url_for('static', filename='assets/overlays/9_2.glb') }}">
+                </a-entity>
             </a-entity>
+
         </a-entity>
 
         </a-entity>
     </a-scene>
 
     <script>
-
-        let tracker = document.getElementById("tracker");
-
-        tracker.addEventListener("zappar-visible", () => {
-            console.log("Image has become visible");
-        });
-
-        tracker.addEventListener("zappar-notvisible", () => {
-            console.log("Image is no longer visible");
-        });
 
         var curr = 0;
         var picAmount = 6;
@@ -94,7 +96,6 @@
                 d.getElementById("pic" + (curr + 1)).setAttribute("visible", false);
             }
         }
-
 
     </script>
 </body>
