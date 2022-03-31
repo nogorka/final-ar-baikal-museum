@@ -1,4 +1,4 @@
-from ..db import mysql
+from ..db import mysql_select
 import json
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -6,11 +6,9 @@ import random
 
 
 def get_route_json():
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute("SELECT jsonUri from map;")
-    uri = cursor.fetchall()[0][0]
-    return uri
+    sql = "SELECT jsonUri from map;"
+    data = mysql_select(sql)
+    return data[0][0]
 
 
 def open_json(path):

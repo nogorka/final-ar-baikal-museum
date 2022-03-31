@@ -1,13 +1,6 @@
-from ..db import mysql
+from ..db import mysql_select
 import datetime
 
-
-def get_data(sql_query):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-
-    cursor.execute(sql_query)
-    return cursor.fetchall()
 
 
 def get_avg_values_raw():
@@ -15,7 +8,7 @@ def get_avg_values_raw():
         vr.visualFeedback, vr.description, vr.completeness
         from entities as e, visitingrecords as vr
         where e.id = vr.entityId;"""
-    data = get_data(sql)
+    data = mysql_select(sql)
 
     stats = {}
     for line in data:
@@ -61,7 +54,7 @@ def get_rooms_visiting():
     # нужно изменить значение с 0
     # на количество времени, прошедшее со дня начала
 
-    data = get_data(sql)
+    data = mysql_select(sql)
 
     stats = {}
 
@@ -96,7 +89,7 @@ def get_time_spend_in_front():
     sql = """SELECT e.id, e.name, vr.spentTimeSec
         from entities as e, visitingrecords as vr
         where e.id = vr.entityId;"""
-    data = get_data(sql)
+    data = mysql_select(sql)
 
     stats = {}
     for line in data:
@@ -122,7 +115,7 @@ def get_weekly():
     sql = """SELECT e.id, e.name, vr.startTime
     from entities as e, visitingrecords as vr
     where e.id = vr.entityId;"""
-    data = get_data(sql)
+    data = mysql_select(sql)
 
     stats = {}
 
