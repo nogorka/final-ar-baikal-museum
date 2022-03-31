@@ -48,7 +48,7 @@
 
         <a-camera zappar-camera cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
 
-        <a-entity zappar-image="#target-file" id="tracker">
+        <a-entity zappar-image="target: #target-file" id="tracker">
             <a-entity geometry="primitive: plane" material="src: #next; transparent: true;" position="0.7 0 0"
                 scale="0.2 0.2 0.2" data-clickable onclick="OnNextClick()"></a-entity>
 
