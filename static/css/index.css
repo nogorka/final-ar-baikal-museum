@@ -30,3 +30,11 @@ body {
   margin-right: auto;
   margin-top: 10%;
 }
+
+th {
+  background-color: beige;
+  text-align: center;
+}
+td {
+  text-align: center;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
+
+    <script src="{{url_for('static', filename='js/portals.js')}}"></script>
+    <link rel="icon" href="{{ url_for('static',filename='assets/favicon.png') }}">
+
+    <title>{% block title %}{% endblock %} | Музей капля Байкала</title>
+</head>
+
+<body>
+    <a-scene>
+        <a-assets>
+
+            <a-image id="photo-1" src="https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-1-min.jpg?v=1644759629016"></a-image>
+            <a-image id="photo-2" src="https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-2-min.jpg?v=1644759630812"></a-image>
+            <a-image id="photo-3" src="https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-3-min.jpg?v=1644759856208"></a-image>
+            <a-image id="photo-4" src="{{url_for('static', filename='assets/portal-placeholder.png')}}"></a-image>
+
+            <!-- Shivering animation -->
+            <a-mixin id="portal-mixin" look-at="#player" geometry="primitive: circle; segments: 64"
+                material="shader: portalshader; backgroundColor: #333; transparent: true"></a-mixin>
+        </a-assets>
+
+        <!-- Allow user to click on elements by adding cursor component & identify raycaster objects for better performance -->
+        <a-camera id="player" cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
+
+        <!-- Portals -->
+        <a-entity id="portals" layout="type: circle; radius: 10; plane: xz" position="0 0 0">
+
+            <!-- Single portal -->
+            <a-entity mixin="portal-mixin" material="pano: #photo-1" position="2 2 -9" rotation="0 0 0"
+                class="collidable" link="href: /photo360?portal=1">
+
+                <a-image height="0.7" width="3" position="0 1.5 0">
+                    <!-- Custom cyrillic font -->
+                    <a-text value="Портал на Байкал 1" negate="false"
+                        font-image="{{ url_for('static', filename='assets/font/OpenSans.png') }}"
+                        font="{{ url_for('static', filename='assets/font/OpenSans-msdf.json') }}" height="0.7" width="3"
+                        align="center" color="black" scale="2 2 2">
+                    </a-text>
+                </a-image>
+
+            </a-entity>
+            <!-- Single portal end -->
+
+            <a-entity mixin="portal-mixin" material="pano: #photo-2" position="6 2 -8" rotation="0 -30 0"
+                class="collidable" link="href: /photo360?portal=2">
+
+                <a-image height="0.7" width="3" position="0 1.5 0">
+                    <!-- Custom cyrillic font -->
+                    <a-text value="Портал на Байкал 2" negate="false"
+                        font-image="{{ url_for('static', filename='assets/font/OpenSans.png') }}"
+                        font="{{ url_for('static', filename='assets/font/OpenSans-msdf.json') }}" height="0.7" width="3"
+                        align="center" color="black" scale="2 2 2">
+                    </a-text>
+                </a-image>
+
+            </a-entity>
+
+            <a-entity mixin="portal-mixin" material="pano: #photo-3" position="10 2 -7" rotation="0 -45 0"
+                class="collidable" link="href: /photo360?portal=3">
+
+                <a-image height="0.7" width="3" position="0 1.5 0">
+                    <!-- Custom cyrillic font -->
+                    <a-text value="Портал на Байкал 3" negate="false"
+                        font-image="{{ url_for('static', filename='assets/font/OpenSans.png') }}"
+                        font="{{ url_for('static', filename='assets/font/OpenSans-msdf.json') }}" height="0.7" width="3"
+                        align="center" color="black" scale="2 2 2">
+                    </a-text>
+                </a-image>
+
+            </a-entity>
+
+            <a-entity mixin="portal-mixin" material="pano: #photo-4" position="-2 2 -9" rotation="0 0 0"
+                class="collidable" link="href: /portal">
+
+                <a-image height="0.7" width="3" position="0 1.5 0">
+                    <!-- Custom cyrillic font -->
+                    <a-text value="Выход реальный мир" negate="false"
+                        font-image="{{ url_for('static', filename='assets/font/OpenSans.png') }}"
+                        font="{{ url_for('static', filename='assets/font/OpenSans-msdf.json') }}" height="0.7" width="3"
+                        align="center" color="black" scale="2 2 2">
+                    </a-text>
+                </a-image>
+
+            </a-entity>
+        </a-entity>
+
+        {% block current_world%}{% endblock %}
+
+    </a-scene>
+</body>
+
+</html>

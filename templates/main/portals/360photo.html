@@ -1,0 +1,8 @@
+<!doctype html>
+{% extends 'main/portals/vrworld.html' %}
+
+{% block title %}Фото 360 - №{{photo_id}}{% endblock %}
+
+{% block current_world %}
+<a-sky radius="50" src="{{photo}}"></a-sky>
+{% endblock %}

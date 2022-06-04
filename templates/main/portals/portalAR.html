@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/0.3.36/zappar-aframe.js"></script>
+
+    <script src="{{url_for('static', filename='js/portals.js')}}"></script>
+    <link rel="icon" href="{{ url_for('static',filename='assets/favicon.png') }}">
+
+    <title>Портал | Музей капля Байкала</title>
+
+</head>
+
+<body>
+
+    <a-scene>
+        <a-entity zappar-permissions-ui id="permissions"></a-entity>
+        <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+        <a-assets>
+            <a-asset-item id="target-file" src="{{ url_for('static', filename='assets/markers/zpt/4.zpt') }}"></a-asset-item>
+            <a-asset-item id="portal" src="{{ url_for('static', filename='assets/overlays/portal.glb') }}"></a-asset-item>
+            <audio id="sound" src="{{ url_for('static', filename='assets/overlays/sound.mp3') }}" preload="auto"></audio>
+
+            <!-- Scaling animation -->
+            <a-mixin id="overlayProperties" scale="1 1 1" material="alpha-test:0.5"
+                animation="property: scale; to: 1.5 1.5 1; dir: alternate; dur: 2000; loop:true;"></a-mixin>
+        </a-assets>
+
+        <!-- Allow user to click on elements by adding cursor component & identify raycaster objects for better performance -->
+        <a-camera zappar-camera cursor="rayOrigin: mouse; fuse: false;" raycaster="objects: .collidable"></a-camera>
+
+        <a-entity zappar-image="target: #target-file">
+            <a-entity visibility-changer>
+                <a-image height="1" width="5" position="0 5 -5" color="white">
+
+                    <!-- Custom cyrillic font -->
+                    <a-text value="Нажмите на портал чтобы войти" negate="false"
+                        font-image="{{ url_for('static', filename='assets/font/OpenSans.png') }}"
+                        font="{{ url_for('static', filename='assets/font/OpenSans-msdf.json') }}" height="1" width="3"
+                        align="center" color="black" scale="2 2 2">
+                    </a-text>
+                </a-image>
+
+                <a-entity gltf-model="#portal" class="collidable" position="0 0 -5" mixin="overlayProperties"
+                    sound="src: #sound; on: click;" link="href: /environment"></a-entity>
+            </a-entity>
+        </a-entity>
+    </a-scene>
+
+</body>
+
+</html>

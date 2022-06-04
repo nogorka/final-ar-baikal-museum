@@ -1,90 +1,69 @@
-function getDistance(x1, y1, x2, y2) {
-    let y = x2 - x1;
-    let x = y2 - y1;
-
-    return Math.sqrt(x * x + y * y);
-}
-
-var zones = {
-    "baikal1": {
-        type: "img",
-        pano: "https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-1-min.jpg?v=1644759629016",
-    },
-    "baikal2": {
-        type: "img",
-        pano: "https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-2-min.jpg?v=1644759630812",
-    },
-    "baikal3": {
-        type: "img",
-        pano: "https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/baikal-3-min.jpg?v=1644759856208",
-    },
-    "home": {
-        type: "img",
-        pano: "https://cdn.glitch.global/e16f5e56-c882-4834-a302-29605aaa4e28/360_F_366041898_gSewr7LZE2Vhf1a51U7IS1FBnUcvxBdU.jpg?v=1648047744117",
-    },
-};
-
-var domain = "home";
-var zone = zones[domain];
-var player = null;
-var distances = {};
-
-window.onload = (event) => {
-    player = document.querySelector("#player");
-};
-
-AFRAME.registerComponent('interactive-portal', {
-    schema: {
-        key: { type: 'string' },
-    },
-
-    init: function () {
-        let el = this.el;
-
-        setInterval(() => {
-
-            if (player) {
-                let p_p = player.getAttribute('position');
-                let e_p = el.getAttribute('position');
-
-
-                distances[this.data.key] = getDistance(p_p.x, p_p.z, e_p.x, e_p.z);
-
-                if (distances[this.data.key] < 0.5) {
-                    if (el.getAttribute("visible") == true) {
-
-                        document.querySelectorAll("*[interactive-portal]").forEach((elem) => {
-                            elem.setAttribute("visible", true);
-                        });
-                        el.setAttribute("visible", false);
-                        domain = this.data.key;
-                        zone = zones[domain];
-
-                        if (zone.type == "img") {
-                            document.querySelector("a-sky").setAttribute("src", zone.pano);
-                        } else {
-                            document.querySelector("a-sky").setAttribute("src", "");
-                            document.querySelector("a-sky").setAttribute("color", zone.pano);
-                        }
-
-                    }
-                }
-            }
-        }, 300);
-    },
+// Show content when the image becomes visible
+AFRAME.registerComponent("visibility-changer", {
+  init: function () {
+    this.el.setAttribute("visible", false)
+    this.el.sceneEl.addEventListener('zappar-visible', () => this.el.setAttribute("visible", true));
+  }
 });
 
+AFRAME.registerShader("portalshader", {
+  schema: {
+    backgroundColor: { default: "white", type: "color", is: "uniform" },
+    isGrayscale: { type: "int", is: "uniform", default: 0.0 },
+    pano: { type: "map", is: "uniform" },
+    time: { type: "time", is: "uniform" },
+  },
 
-AFRAME.registerShader("shaderportal", {
-    schema: {
-        backgroundColor: { default: "white", type: "color", is: "uniform" },
-        isGrayscale: { type: "int", is: "uniform", default: 0.0 },
-        pano: { type: "map", is: "uniform" },
-        time: { type: "time", is: "uniform" },
-    },
+  //glsl shaders
+  vertexShader: `
+    varying vec3 vWorldPosition;
+    varying float vDistanceToCenter;
 
-    vertexShader:
-        document.getElementById('vertexShader').textContent,
-    fragmentShader:
-        document.getElementById('fragmentShader').textContent,
+    void main() {
+      vDistanceToCenter = clamp(length(position - vec3(0.0, 0.0, 0.0)), 0.0, 1.0);
+      vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }`,
+  fragmentShader: `
+    #define RECIPROCAL_PI2 0.15915494
+    uniform float time;
+    uniform int isGrayscale;
+    uniform sampler2D pano;
+    uniform vec3 backgroundColor;
+    varying float vDistance;
+    varying float vDistanceToCenter;
+    varying vec3 vWorldPosition;
+
+    void main() {
+      float alpha;
+      float gray;
+      vec3 color;
+      vec3 direction = normalize(vWorldPosition - cameraPosition);
+      vec2 sampleUV;
+      vec2 sampleA;
+      vec2 sampleB;
+
+      float borderThickness = 0.94;
+
+      sampleUV.x = atan(direction.z, -direction.x) * -RECIPROCAL_PI2 + 0.5;
+      sampleUV.y = clamp(direction.y * 0.5  + 0.5, 0.0, 1.0);
+
+      // wobble
+      sampleA = sampleUV + sin(time/1000.0 + sampleUV.x * 24.0 + sampleUV.y * 18.0) * 0.004;
+      sampleB = sampleUV + sin(time/1000.0 + sampleUV.x * 24.0 + sampleUV.y * 18.0) * 0.005;
+
+      // Opacity portal effect, positive sin wave from 0.5 to 1.0.
+      alpha = sin(time / 800.0);
+      alpha = (alpha + 1.0) / 2.0;
+      alpha = mix(0.85, 1.0, alpha);
+      color = vec3(texture2D(pano, sampleB).x, texture2D(pano, sampleA).yz);
+      alpha = smoothstep(0.05, 1.0, 1.6 - vDistanceToCenter);
+      gl_FragColor = vec4(color, alpha);
+
+      if (isGrayscale == 1) {
+        gray = (color.r + color.g + color.b) / 3.0;
+        gl_FragColor = vec4(gray, gray, gray, alpha);
+      }
+    }
+`
 });
