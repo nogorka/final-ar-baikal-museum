@@ -4,26 +4,27 @@
 {% block title %}Predefined routes{% endblock %}
 
 {% block content %}
-<div class="start-content">
+<div class="container m-2">
     <div content="upper">
         <h1>Предзаданные маршруты</h1>
         <p>Здесь вы можете выбрать варианты маршрутов гида:</p>
         <form name="predefined" method="post">
-            <p>
+            <div class="row">
                 <select class="form-select">
                     <option selected disabled>Выберите маршрут</option>
                     {% for row in routes %}
                     <option value={{row[2]}}>{{row[1]}}</option>
                     {% endfor %}
                 </select>
-            </p>
-            <p class="d-grid gap-2 col-6 mx-auto">
-                <input class="btn btn-primary btn-lg" id="predefined-submit" type="button" value="Отправить"
+            </div>
+            <br>
+            <div class="row">
+                <input class="col btn btn-primary btn-lg" id="predefined-submit" type="button" value="Отправить"
                     onclick="submitPredefined(this)">
-            </p>
+            </div>
         </form>
     </div>
 
-    <a href="/guide" class="btn btn-secondary d-grid gap-2 col-6 mx-auto">Назад</a>
+    <div class="row fixed-bottom"><a href="/guide" class="col btn btn-secondary">Назад</a></div>
 </div>
 {% endblock %}

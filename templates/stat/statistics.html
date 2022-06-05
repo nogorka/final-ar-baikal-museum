@@ -4,22 +4,25 @@
 {% block title %}Статистика{% endblock %}
 
 {% block content %}
-<div class="start-content">
+<div class="container m-2">
     <h1>Пользовательская статистика</h1>
     <p>Здесь вы можете выбрать варианты статистики</p>
-    <div class="btn-group">
-        <a class="btn btn-primary mb-2 btn-lg" href="/rooms_visiting">Посещения по залам</a>
-        <a class="btn btn-primary mb-2 btn-lg" href="/entities_rating">Рейтинг экспонатов</a>
+    <div class="row">
+        <div class="col"><a class="btn btn-primary mb-2 btn-lg" href="/rooms_visiting">Посещения по залам</a>
+        </div>
+        <div class="col"><a class="btn btn-primary mb-2 btn-lg" href="/entities_rating">Рейтинг экспонатов</a>
+        </div>
     </div>
 
     <h1>Служебная статистика</h1>
     <p>Здесь вы можете выбрать варианты статистики</p>
-    <div class="btn-group">
-        <a class="btn btn-primary mb-2 btn-lg" href="/time_in_front">Время проведенное перед</a>
-        <a class="btn btn-primary mb-2 btn-lg" href="/avg_values">Метрики по критерию</a>
-        <a class="btn btn-primary mb-2 btn-lg" href="/weekly">Понедельная статистика</a>
+    <div class="row">
+        <div class="col"><a class="btn btn-primary mb-2 btn-lg" href="/time_in_front">Время проведенное перед</a>
+        </div>
+        <div class="col"><a class="btn btn-primary mb-2 btn-lg" href="/avg_values">Метрики по критерию</a></div>
+        <div class="col"><a class="btn btn-primary mb-2 btn-lg" href="/weekly">Понедельная статистика</a></div>
     </div>
 
-    <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
+    <div class="row fixed-bottom"><a href="/" class="btn btn-secondary col">Назад</a></div>
 </div>
 {% endblock %}

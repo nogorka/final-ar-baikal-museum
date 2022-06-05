@@ -4,16 +4,18 @@
 {% block title %}Generated routes{% endblock %}
 
 {% block content %}
-<div class="start-content">
+<div class="container m-2">
 
     <h1>Генеративный маршруты</h1>
     <p>Здесь вы можете нажать на кнопку</p>
     <form method="post">
-        <p class="d-grid gap-2 col-6 mx-auto"> <input class="btn btn-primary btn-lg" id="generated-submit" type="button"
-                value="Создать маршрут" onclick="submitGenerated()"></p>
+        <div class="row">
+            <input class="col btn btn-primary btn-lg" id="generated-submit" type="button" value="Создать маршрут"
+                onclick="submitGenerated()">
+        </div>
     </form>
 
-    <a href="/guide" class="btn btn-secondary d-grid gap-2 col-6 mx-auto">Назад</a>
+    <div class="row fixed-bottom"><a href="/guide" class="col btn btn-secondary">Назад</a></div>
 </div>
 
 {% endblock %}

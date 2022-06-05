@@ -4,15 +4,15 @@
 {% block title %}Start page{% endblock %}
 
 {% block content %}
-<div class="start-content">
+<div class="container m-2">
     <h1>Добро пожаловать в AR гид!!</h1>
     <p>Здесь вы можете выбрать варианты для своего гида:</p>
-    <div class="btn-group">
-        <a class="btn btn-primary" href="/predefined">предзаданные маршруты</a>
-        <a class="btn btn-primary" href="/generated">генеративный маршрут</a>
-        <a class="btn btn-primary" href="/custom">пользовательский маршрут</a>
+    <div class="row">
+        <div class="col mb-2"><a class="btn btn-primary mx-auto" href="/predefined">предзаданные маршруты</a></div>
+        <div class="col mb-2"><a class="btn btn-primary mx-auto" href="/generated">генеративный маршрут</a></div>
+        <div class="col mb-2"><a class="btn btn-primary mx-auto" href="/custom">пользовательский маршрут</a></div>
     </div>
 
-    <a href="/" class="btn btn-secondary d-grid gap-2 mt-3">Назад</a>
+    <div class="row fixed-bottom"><a href="/" class="btn btn-secondary col">Назад</a></div>
 </div>
 {% endblock %}

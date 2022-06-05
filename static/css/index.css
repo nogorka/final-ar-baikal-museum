@@ -38,3 +38,7 @@ th {
 td {
   text-align: center;
 }
+
+.btn{
+  min-width: 300px;
+}

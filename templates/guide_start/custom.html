@@ -4,12 +4,14 @@
 {% block title %}Predefined routes{% endblock %}
 
 {% block content %}
-<div class="start-content">
+<div class="container m-2">
 
     <h1>Пользовательский маршруты</h1>
     <p>Здесь вы можете выбрать экспонаты которые вы хотите посетить</p>
     <form name="custom" method="post">
-        <p><select class="form-select" multiple size="9">
+        
+        <div class="row">
+            <select class="form-select" multiple size="9">
                 <option disabled>Выберите экспонаты</option>
 
                 {% for room, entities in rooms.items() %}
@@ -21,14 +23,15 @@
                 </optgroup>
                 {% endfor %}
             </select>
-        </p>
-        <p class="d-grid gap-2 col-6 mx-auto">
-            <input class="btn btn-primary btn-lg" id="custom-submit" type="button" value="Отправить"
+        </div>
+        <br>
+        <div class="row">
+            <input class="col btn btn-primary btn-lg" id="custom-submit" type="button" value="Отправить"
                 onclick="submitCustom(this)">
-        </p>
+        </div>
     </form>
 
-    <a href="/guide" class="btn btn-secondary d-grid gap-2 col-6 mx-auto">Назад</a>
+    <div class="row fixed-bottom"><a href="/guide" class="col btn btn-secondary">Назад</a></div>
 </div>
 
 {% endblock %}
